@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Accenture Assessment Readiness Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #101720;
+    --ink-soft: #3a4552;
+    --paper: #F6F5F1;
+    --paper-raised: #FFFFFF;
+    --line: #DAD6CB;
+    --amber: #C9821E;
+    --amber-soft: #F3E4CB;
+    --amber-deep: #8f5c14;
+    --teal: #2E5C58;
+    --teal-soft: #DCE9E7;
+    --teal-deep: #1c3d3a;
+    --red: #A13D2B;
+    --red-soft: #F1DCD5;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Public Sans', -apple-system, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EDEAE1; --ink-soft: #B9B3A4; --paper: #12181C; --paper-raised: #1A2126;
+      --line: #2C3439; --amber: #E0A245; --amber-soft: #33291a; --amber-deep: #f0bb70;
+      --teal: #7FBBB3; --teal-soft: #1c2b29; --teal-deep: #a9d9d1; --red: #E08267; --red-soft: #3a2420;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EDEAE1; --ink-soft: #B9B3A4; --paper: #12181C; --paper-raised: #1A2126;
+    --line: #2C3439; --amber: #E0A245; --amber-soft: #33291a; --amber-deep: #f0bb70;
+    --teal: #7FBBB3; --teal-soft: #1c2b29; --teal-deep: #a9d9d1; --red: #E08267; --red-soft: #3a2420;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 40px 22px 90px; }
+
+  header.hero { margin-bottom: 34px; }
+  .kicker { font-size: 13px; color: var(--teal); font-weight: 600; letter-spacing: 0.02em; margin: 0 0 10px; }
+  h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(30px, 5.5vw, 46px); line-height: 1.08; margin: 0 0 14px; letter-spacing: -0.01em; }
+  .sub { font-size: 16px; color: var(--ink-soft); max-width: 64ch; margin: 0 0 22px; }
+
+  .countdown-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: stretch; }
+  .countdown-card { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 4px; padding: 16px 20px; flex: 1 1 200px; }
+  .countdown-card .num { font-family: var(--font-display); font-size: 40px; font-weight: 600; color: var(--amber); line-height: 1; }
+  .countdown-card .lbl { font-size: 13px; color: var(--ink-soft); margin-top: 6px; }
+  .target-picker { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 4px; padding: 16px 20px; flex: 2 1 320px; }
+  .target-picker .lbl { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
+  .target-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tbtn { border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 7px 13px; border-radius: 999px; font-family: var(--font-body); font-size: 13.5px; cursor: pointer; }
+  .tbtn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  nav.tabs { display: flex; gap: 4px; overflow-x: auto; margin: 34px 0 26px; border-bottom: 1px solid var(--line); -webkit-overflow-scrolling: touch; }
+  nav.tabs button { font-size: 14.5px; font-weight: 600; color: var(--ink-soft); background: none; border: none; padding: 10px 14px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  nav.tabs button.active { color: var(--ink); border-bottom-color: var(--amber); }
+
+  .panel { display: none; }
+  .panel.active { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px);} to {opacity:1; transform:none;} }
+
+  .day-head { display:flex; align-items:baseline; justify-content: space-between; gap: 14px; margin-bottom: 6px; flex-wrap: wrap;}
+  .day-head h2 { font-family: var(--font-display); font-size: 26px; font-weight: 600; margin: 0; }
+  .day-date { font-size: 13.5px; color: var(--ink-soft); }
+  .day-objective { font-size: 15px; color: var(--ink-soft); margin: 4px 0 22px; max-width: 64ch;}
+
+  .progress-track { height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; margin-bottom: 26px; }
+  .progress-fill { height: 100%; background: var(--teal); width: 0%; transition: width .3s ease; }
+
+  .block { border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); padding: 18px 20px 16px; margin-bottom: 16px; }
+  .block-title { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+  .badge { flex-shrink: 0; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--paper-raised); background: var(--teal); }
+  .badge.amber { background: var(--amber); }
+  .badge.red { background: var(--red); }
+  .block h3 { font-size: 15.5px; font-weight: 700; color: var(--ink); margin: 0; }
+  .block .block-meta { font-size: 12.5px; color: var(--ink-soft); margin: 4px 0 14px 46px; }
+
+  .subgroup-label { font-size: 11.5px; font-weight: 700; color: var(--teal); letter-spacing: 0.03em; margin: 16px 0 6px; padding-top: 12px; border-top: 1px dashed var(--line); }
+  .subgroup-label:first-of-type { border-top: none; padding-top: 0; margin-top: 4px; }
+
+  ul.checklist { list-style: none; margin: 0; padding: 0; }
+  ul.checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 5px 0; font-size: 14px; cursor: pointer; border-radius: 3px; }
+  ul.checklist li:hover { background: var(--paper); }
+  .tri { margin-top: 3px; width: 15px; height: 15px; border-radius: 4px; border: 1.5px solid var(--line); flex-shrink: 0; transition: background .12s ease, border-color .12s ease; }
+  .tri[data-state="red"] { background: var(--red); border-color: var(--red); }
+  .tri[data-state="yellow"] { background: var(--amber); border-color: var(--amber); }
+  .tri[data-state="green"] { background: var(--teal); border-color: var(--teal); }
+  ul.checklist label { cursor: pointer; }
+  ul.checklist li.done label { color: var(--ink-soft); }
+
+  .tri-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 12px; color: var(--ink-soft); margin: -14px 0 20px; }
+  .tri-legend .lg { display: flex; align-items: center; gap: 6px; }
+  .tri-legend .dot { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+  .tri-legend .hint { font-style: italic; }
+
+  .note { border-left: 3px solid var(--amber); background: var(--amber-soft); padding: 12px 16px; border-radius: 0 4px 4px 0; font-size: 13.5px; margin: 16px 0; }
+  .note strong { color: var(--red); }
+
+  /* Timeline / time-strategy bar */
+  .timeline-bar { display: flex; width: 100%; height: 34px; border-radius: 6px; overflow: hidden; margin: 16px 0 10px; border: 1px solid var(--line); }
+  .timeline-seg { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; }
+  .timeline-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--ink-soft); margin-bottom: 6px; }
+  .timeline-legend span.dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .time-strategy { display: grid; gap: 8px; margin: 14px 0 4px; }
+  .time-strategy .row { display: flex; justify-content: space-between; gap: 12px; font-size: 13.5px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .time-strategy .row:first-child { border-top: none; }
+  .time-strategy .row .t { color: var(--ink-soft); flex-shrink: 0; white-space: nowrap; font-weight: 600; }
+
+  /* Priority bars */
+  .priority-bars { margin: 14px 0 4px; }
+  .pbar-row { margin-bottom: 12px; }
+  .pbar-top { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 5px; }
+  .pbar-top .pname { font-weight: 600; }
+  .pbar-top .pval { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .pbar-track { height: 9px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .pbar-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--amber)); border-radius: 999px; }
+
+  /* Stage flow */
+  .stage-flow { display: flex; flex-direction: column; gap: 0; margin: 16px 0 4px; }
+  .stage { border: 1px solid var(--line); background: var(--paper-raised); border-radius: 4px; padding: 12px 16px; font-size: 13.5px; display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .stage .name { font-weight: 700; }
+  .stage .dur { color: var(--ink-soft); font-size: 12.5px; }
+  .arrow { text-align: center; color: var(--ink-soft); font-size: 12.5px; padding: 3px 0; }
+
+  .pillbox { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .pill { background: var(--teal-soft); color: var(--teal-deep); font-size: 12.5px; padding: 5px 11px; border-radius: 999px; font-weight: 600; }
+
+  /* OSI stack diagram */
+  .osi-stack { display: flex; flex-direction: column; gap: 3px; margin: 16px 0 8px; }
+  .osi-row { display: grid; grid-template-columns: 30px 1fr 1.3fr; gap: 10px; align-items: center; padding: 9px 12px; border-radius: 4px; font-size: 13px; }
+  .osi-row .n { font-family: var(--font-display); font-weight: 700; font-size: 15px; }
+  .osi-row .name { font-weight: 700; }
+  .osi-row .ex { color: var(--ink-soft); font-size: 12px; }
+  .osi-row:nth-child(odd) { background: var(--teal-soft); }
+  .osi-row:nth-child(even) { background: var(--amber-soft); }
+
+  /* TCP vs UDP comparison */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin: 16px 0 8px; font-size: 13px; }
+  .compare-grid > div { padding: 9px 12px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .compare-grid > div:nth-child(-n+3) { border-top: none; }
+  .compare-grid > div:nth-child(3n+1) { border-left: none; background: var(--paper); font-weight: 600; color: var(--ink-soft); font-size: 12px; }
+  .compare-grid .h { font-weight: 700; background: var(--ink) !important; color: var(--paper) !important; }
+  @media (max-width: 560px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-grid > div:nth-child(3n+1) { border-left: none; }
+    .compare-grid > div { border-left: none !important; }
+  }
+
+  /* Request flow */
+  .flow-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 16px 0 8px; }
+  .flow-pill { background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-size: 12.5px; font-weight: 600; }
+  .flow-chevron { color: var(--amber); font-weight: 700; font-size: 14px; }
+
+  /* Cloud responsibility grid */
+  .resp-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin: 16px 0 8px; font-size: 12.5px; }
+  .resp-grid > div { padding: 8px 10px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); text-align: center; }
+  .resp-grid > div:nth-child(-n+4) { border-top: none; font-weight: 700; background: var(--ink); color: var(--paper); }
+  .resp-grid > div:nth-child(4n+1) { border-left: none; text-align: left; font-weight: 600; }
+  .resp-grid .you { background: var(--amber-soft); color: var(--amber-deep); font-weight: 600; }
+  .resp-grid .them { background: var(--teal-soft); color: var(--teal-deep); font-weight: 600; }
+  .resp-legend { display: flex; gap: 16px; font-size: 12px; color: var(--ink-soft); margin-bottom: 4px; flex-wrap: wrap; }
+  .resp-legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+  @media (max-width: 560px) { .resp-grid { grid-template-columns: 1fr 1fr; } .resp-grid > div:nth-child(-n+4){ display:none; } .resp-grid > div:nth-child(4n+1){ grid-column: 1 / -1; background: var(--paper); color: var(--ink); font-weight:700; border-left:none; border-top: 1px solid var(--line); } }
+
+  /* Attack cards */
+  .attack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 16px 0 8px; }
+  .attack-card { border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; background: var(--paper); }
+  .attack-card .aname { font-weight: 700; font-size: 13.5px; color: var(--red); margin-bottom: 4px; }
+  .attack-card .adef { font-size: 12.5px; color: var(--ink-soft); }
+  .attack-card .adef b { color: var(--teal-deep); font-weight: 600; }
+
+  table.priority { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+
+  footer.foot { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-soft); }
+
+  .evidence-grid { display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:10px; margin-top:14px; }
+  .evidence-card { border:1px solid var(--line); border-radius:6px; padding:12px 14px; background:var(--paper); }
+  .evidence-card .ev-title { font-weight:700; font-size:13px; margin-bottom:4px; }
+  .evidence-card .ev-body { font-size:12.5px; color:var(--ink-soft); }
+  .ev-confirmed { border-top:3px solid var(--teal); }
+  .ev-reported { border-top:3px solid var(--amber); }
+  .ev-variant { border-top:3px solid var(--red); }
+  .micro-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+  .micro-card { border:1px dashed var(--line); border-radius:5px; padding:10px 12px; background:var(--paper); }
+  .micro-card strong { display:block; font-size:12.5px; margin-bottom:3px; }
+  .micro-card span { font-size:12px; color:var(--ink-soft); }
+  .source-strip { font-size:12px; color:var(--ink-soft); margin-top:12px; padding-top:10px; border-top:1px solid var(--line); }
+  @media (max-width:640px){ .evidence-grid,.micro-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="kicker">Personal prep plan — built from the official Accenture assessment structure</p>
+    <h1>Assessment Readiness Plan</h1>
+    <p class="sub">Organized round-by-round, matching how Accenture's process actually works: you only sit the next round after clearing the one before it. Prep each round's tab before you expect to face it, in whatever order your invite runs them — plus a flexible Revision reference for the morning of, or the minutes before, any specific round.</p>
+
+    <div class="countdown-row">
+      <div class="countdown-card">
+        <div class="num" id="daysLeft">–</div>
+        <div class="lbl">days of prep left (today counts)</div>
+      </div>
+      <div class="target-picker">
+        <div class="lbl">Your slot is likely one of these — tap the one you're assigned so the plan tracks it:</div>
+        <div class="target-btns" id="targetBtns">
+          <button class="tbtn" data-date="2026-09-28">Mon 28 Sept</button>
+          <button class="tbtn" data-date="2026-09-29">Tue 29 Sept</button>
+          <button class="tbtn" data-date="2026-09-30">Wed 30 Sept</button>
+          <button class="tbtn" data-date="2026-10-01">Thu 1 Oct</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" id="slotNote">
+      Study Round 1 through Round 4 in order over the next few days — by the time your slot arrives you'll have gone through every topic once. There's no separate mock/consolidation day — instead, use the <strong>Revision</strong> tab as a standing reference: skim it the morning of your assessment, or jump to just the one round that's coming up next while you're sitting there, since you'll only advance to it after clearing the previous one anyway.
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-panel="overview" class="active">Overview</button>
+    <button data-panel="day1">Round 1 · Technical</button>
+    <button data-panel="day2">Round 2 · Coding</button>
+    <button data-panel="day3">Round 3 · Behavioral+Cognitive</button>
+    <button data-panel="day4">Round 4 · Communication</button>
+    <button data-panel="day5">Revision</button>
+  </nav>
+
+  <!-- OVERVIEW -->
+  <section class="panel active" id="overview">
+    <div class="block">
+      <div class="block-title"><div class="badge">01</div><h3>How the real assessment is structured</h3></div>
+      <div class="block-meta">Straight from your Accenture invite — this is what each day's prep is aimed at</div>
+      <div class="stage-flow">
+        <div class="stage"><span class="name">Mock assessment</span><span class="dur">10 min · mandatory tech check</span></div>
+        <div class="arrow">↓</div>
+        <div class="stage"><span class="name">1 · Technical</span><span class="dur">45 min — MS Office &amp; common apps, pseudocode, networking/security/cloud fundamentals, basic programming concepts</span></div>
+        <div class="arrow">↓ sectional cutoff ↓</div>
+        <div class="stage"><span class="name">2 · Coding</span><span class="dur">60 min · 3 questions — reported mix: 1 DSA (Java/Python/C#) + 1 SQL join query + 1 HTML/CSS/JS task, though other languages (.NET, C++) are listed as options</span></div>
+        <div class="arrow">↓</div>
+        <div class="stage"><span class="name">3 · Behavioral + Cognitive</span><span class="dur">40 min — personality; gamified/immersive puzzles &amp; numerical equations</span></div>
+        <div class="arrow">↓</div>
+        <div class="stage"><span class="name">4 · Communication</span><span class="dur">~25–30 min, separate slot — automated reading/listening/speaking/writing</span></div>
+      </div>
+      <div class="note">Your invite lists this order (Technical → Coding → Behavioral+Cognitive → Communication). A few 2025–26 candidate reports describe Behavioral+Cognitive running <em>before</em> the Technical MCQs instead — order seems to vary by drive/college. It doesn't change what to study, only the sequence on the day, so don't be thrown if your screen order differs slightly from this list.</div>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge">R</div><h3>Research guardrail — what is confirmed vs variable</h3></div>
+      <div class="block-meta">Research snapshot: 24 Sept 2026 · your invitation remains the source of truth</div>
+      <div class="evidence-grid">
+        <div class="evidence-card ev-confirmed"><div class="ev-title">CONFIRMED · Your assessment</div><div class="ev-body">Use the structure and timings in your invite first: Technical → Coding → Behavioral + Cognitive → Communication, with the listed technical domains.</div></div>
+        <div class="evidence-card ev-reported"><div class="ev-title">REPEATED · Recent 2025–26 reports</div><div class="ev-body">Common recent coding shape: one DSA/backend problem + one SQL task + one HTML/CSS/JS task. Technical reports repeatedly mention pseudocode, Office, networking/security/cloud, and sometimes OS/DBMS basics.</div></div>
+        <div class="evidence-card ev-variant"><div class="ev-title">VARIABLE · Do not memorize</div><div class="ev-body">Exact cognitive games, coding difficulty, question count, languages, and elimination rules vary by drive. Train the underlying skill, not a predicted paper.</div></div>
+      </div>
+      <div class="source-strip"><strong>Planning rule:</strong> official/invite evidence controls the core syllabus; recent candidate evidence only fills gaps or adds a small contingency buffer. No syllabus expansion from a single anecdote.</div>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">02</div><h3>Your priority split across the four rounds</h3></div>
+      <div class="block-meta">Same order every day — if a day runs short, cut from the bottom, never the top. Behavioral needs 30 minutes or less; don't over-invest there.</div>
+      <div class="priority-bars">
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">Programming fundamentals + Pseudocode</span><span class="pval">22%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:88%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">DSA + Coding patterns (Java)</span><span class="pval">25%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:100%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">Networking</span><span class="pval">12%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:48%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">Security</span><span class="pval">8%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:32%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">Cloud</span><span class="pval">7%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:28%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">SQL (backup coding language)</span><span class="pval">6%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:24%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">Cognitive (puzzles + numerical)</span><span class="pval">7%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:28%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">Communication</span><span class="pval">6%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:24%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">MS Office / common apps</span><span class="pval">5%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:20%"></div></div></div>
+        <div class="pbar-row"><div class="pbar-top"><span class="pname">Behavioral (personality)</span><span class="pval">2%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:8%"></div></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge red">03</div><h3>Pick your coding language now</h3></div>
+      <div class="block-meta">One decision, made once — don't revisit it under time pressure on the day</div>
+      <p style="font-size:14.5px; margin:0;">Given your Java/Spring Boot track, use <strong>Java</strong> for the coding round. Keep SQL as a light second track — Accenture's coding sets sometimes include one query-style question, and solving it directly in SQL can save time versus writing Java to process tabular logic.</p>
+      <div class="pillbox"><span class="pill">Primary: Java</span><span class="pill">Backup: SQL for query-style Qs</span></div>
+    </div>
+
+    <div class="note"><strong>The one rule across all four rounds:</strong> broad coverage beats deep mastery of one topic. Three hours perfecting sliding-window problems while networking and security stay untouched is a bad trade — Round 1's cutoff spans all of it.</div>
+  </section>
+
+  <!-- ROUND 1 -->
+  <section class="panel" id="day1">
+    <div class="day-head"><h2>Round 1 — Technical Assessment</h2><span class="day-date">45 min · MCQ-style, sectional cutoff to advance</span></div>
+    <p class="day-objective">Everything Accenture's Technical round actually covers: Programming fundamentals, Pseudocode, Networking, Security, Cloud, MS Office/common apps, and the OS+DBMS variant buffer. Clear this round before Coding unlocks.</p>
+    <div class="progress-track"><div class="progress-fill" id="prog-day1"></div></div>
+    <div class="tri-legend">
+      <span class="lg"><span class="dot" style="background:var(--red)"></span>Fix now</span>
+      <span class="lg"><span class="dot" style="background:var(--amber)"></span>Needs practice</span>
+      <span class="lg"><span class="dot" style="background:var(--teal)"></span>Ready</span>
+      <span class="hint">Tap any item to cycle its confidence</span>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge">PR</div><h3>Programming fundamentals</h3></div>
+      <div class="block-meta">Core concepts + Java specifics</div>
+
+      <div class="subgroup-label">Core concepts</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-1"></span><label for="d1-1">Variables, constants, data types</label></li>
+        <li><span class="tri" data-id="d1-2"></span><label for="d1-2">Type conversion / casting (implicit &amp; explicit)</label></li>
+        <li><span class="tri" data-id="d1-3"></span><label for="d1-3">Operators — arithmetic, relational, logical, bitwise basics</label></li>
+        <li><span class="tri" data-id="d1-4"></span><label for="d1-4">Operator precedence &amp; expression evaluation order</label></li>
+        <li><span class="tri" data-id="d1-5"></span><label for="d1-5">Scope — local vs global vs block scope</label></li>
+      </ul>
+
+      <div class="subgroup-label">Control flow</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-6"></span><label for="d1-6">if / else / nested conditions</label></li>
+        <li><span class="tri" data-id="d1-7"></span><label for="d1-7">switch statements</label></li>
+        <li><span class="tri" data-id="d1-8"></span><label for="d1-8">for / while / do-while loops</label></li>
+        <li><span class="tri" data-id="d1-9"></span><label for="d1-9">break / continue, nested loops</label></li>
+      </ul>
+
+      <div class="subgroup-label">Functions &amp; recursion</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-10"></span><label for="d1-10">Parameters, return values, function calls</label></li>
+        <li><span class="tri" data-id="d1-11"></span><label for="d1-11">Recursion — base case, recursive case, call stack</label></li>
+      </ul>
+
+      <div class="subgroup-label">Arrays, strings &amp; errors</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-12"></span><label for="d1-12">1D/2D arrays — traversal basics</label></li>
+        <li><span class="tri" data-id="d1-13"></span><label for="d1-13">String basics &amp; immutability</label></li>
+        <li><span class="tri" data-id="d1-14"></span><label for="d1-14">Syntax vs runtime vs logical errors</label></li>
+      </ul>
+
+      <div class="subgroup-label">Java specifics</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-15"></span><label for="d1-15">Primitive vs reference types, wrapper classes</label></li>
+        <li><span class="tri" data-id="d1-16"></span><label for="d1-16">String vs StringBuilder — when to use which</label></li>
+        <li><span class="tri" data-id="d1-17"></span><label for="d1-17">static and final</label></li>
+        <li><span class="tri" data-id="d1-18"></span><label for="d1-18">this vs super</label></li>
+        <li><span class="tri" data-id="d1-19"></span><label for="d1-19">== vs .equals()</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">PS</div><h3>Pseudocode — give this real time</h3></div>
+      <div class="block-meta">A distinct skill from writing code: reading unfamiliar logic fast and correctly</div>
+
+      <div class="subgroup-label">Tracing fundamentals</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-20"></span><label for="d1-20">Variable-value tracing through a snippet, step by step</label></li>
+        <li><span class="tri" data-id="d1-21"></span><label for="d1-21">Increment / decrement tracking across iterations</label></li>
+      </ul>
+
+      <div class="subgroup-label">Conditional logic &amp; loops</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-22"></span><label for="d1-22">Nested if/else, AND / OR / NOT, short-circuit evaluation</label></li>
+        <li><span class="tri" data-id="d1-23"></span><label for="d1-23">Nested loops — iteration count, loop boundaries, reverse loops</label></li>
+      </ul>
+
+      <div class="subgroup-label">Arrays, functions &amp; complexity</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-24"></span><label for="d1-24">Array indexing, traversal, swapping in pseudocode notation</label></li>
+        <li><span class="tri" data-id="d1-25"></span><label for="d1-25">Function calls and simple recursive tracing</label></li>
+        <li><span class="tri" data-id="d1-26"></span><label for="d1-26">Reading loop structure into Big-O — O(1), O(n), O(n²), O(log n)</label></li>
+      </ul>
+
+      <div class="subgroup-label">Accenture-specific quirks — worth knowing in advance</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-33"></span><label for="d1-33">C-style pointer / pass-by-reference notation, e.g. <code>Function fun(integer pointer *p)</code> that mutates the caller's value — Java has no pointers, so this syntax will look unfamiliar even though the logic (pass-by-reference vs pass-by-value) is a concept you already know</label></li>
+        <li><span class="tri" data-id="d1-34"></span><label for="d1-34"><code>static</code> variables inside a function that retain their value across repeated calls — a frequent source of "what does this print on the 3rd call" questions</label></li>
+        <li><span class="tri" data-id="d1-35"></span><label for="d1-35">Bitwise operators (AND, OR, XOR, shifts) used inside conditions — convert operands to binary before evaluating</label></li>
+      </ul>
+      <div class="note">Practice this as <strong>timed output-prediction sets</strong>, not passive reading. Cover the answer, trace it yourself, then check.</div>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge red">OP</div><h3>Light OOP revision</h3></div>
+      <div class="block-meta">Useful for programming questions — don't spend a large block here today</div>
+
+      <div class="subgroup-label">Core</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-27"></span><label for="d1-27">Class, object, constructor</label></li>
+        <li><span class="tri" data-id="d1-28"></span><label for="d1-28">Instance variables vs static members</label></li>
+      </ul>
+      <div class="subgroup-label">Four pillars</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d1-29"></span><label for="d1-29">Encapsulation — access modifiers, getters/setters</label></li>
+        <li><span class="tri" data-id="d1-30"></span><label for="d1-30">Inheritance — extends, super, method overriding, IS-A</label></li>
+        <li><span class="tri" data-id="d1-31"></span><label for="d1-31">Polymorphism — overloading vs overriding, dynamic dispatch</label></li>
+        <li><span class="tri" data-id="d1-32"></span><label for="d1-32">Abstraction — abstract class vs interface, when to use which</label></li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title"><div class="badge">NW</div><h3>Networking</h3></div>
+
+      <div class="subgroup-label">Basics</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-1"></span><label for="d3-1">LAN, WAN, client/server, IP, MAC, port, packet</label></li>
+      </ul>
+
+      <div class="subgroup-label">OSI model — all 7 layers</div>
+      <div class="osi-stack">
+        <div class="osi-row"><span class="n">7</span><span class="name">Application</span><span class="ex">HTTP, FTP, SMTP — what the user's app sees</span></div>
+        <div class="osi-row"><span class="n">6</span><span class="name">Presentation</span><span class="ex">Encryption, compression, formatting (SSL/TLS)</span></div>
+        <div class="osi-row"><span class="n">5</span><span class="name">Session</span><span class="ex">Opens/manages/closes connections between apps</span></div>
+        <div class="osi-row"><span class="n">4</span><span class="name">Transport</span><span class="ex">TCP, UDP — reliable delivery, segmentation</span></div>
+        <div class="osi-row"><span class="n">3</span><span class="name">Network</span><span class="ex">IP, routers — logical addressing &amp; routing</span></div>
+        <div class="osi-row"><span class="n">2</span><span class="name">Data Link</span><span class="ex">MAC, switches — node-to-node delivery</span></div>
+        <div class="osi-row"><span class="n">1</span><span class="name">Physical</span><span class="ex">Cables, signals, hardware transmission</span></div>
+      </div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-2"></span><label for="d3-2">Can name all 7 layers in order, bottom-up and top-down</label></li>
+        <li><span class="tri" data-id="d3-3"></span><label for="d3-3">TCP/IP 4-layer model and its mapping to OSI</label></li>
+      </ul>
+
+      <div class="subgroup-label">TCP vs UDP</div>
+      <div class="compare-grid">
+        <div class="h">Property</div><div class="h">TCP</div><div class="h">UDP</div>
+        <div>Connection</div><div>Connection-oriented</div><div>Connectionless</div>
+        <div>Reliability</div><div>Reliable, guaranteed delivery</div><div>No delivery guarantee</div>
+        <div>Ordering</div><div>Ordered</div><div>No ordering guarantee</div>
+        <div>Overhead</div><div>Higher</div><div>Lower, faster</div>
+        <div>Typical use</div><div>HTTP/HTTPS, email, file transfer</div><div>DNS, streaming, gaming, VoIP</div>
+      </div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-4"></span><label for="d3-4">Three-way handshake, flow control, basic congestion control</label></li>
+      </ul>
+
+      <div class="subgroup-label">Protocols — know the problem each one solves</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-5"></span><label for="d3-5">HTTP / HTTPS, DNS, DHCP</label></li>
+        <li><span class="tri" data-id="d3-6"></span><label for="d3-6">FTP, SMTP, POP3, IMAP</label></li>
+        <li><span class="tri" data-id="d3-7"></span><label for="d3-7">SSH, ARP</label></li>
+      </ul>
+
+      <div class="subgroup-label">IP addressing</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-8"></span><label for="d3-8">IPv4 vs IPv6, public vs private IP</label></li>
+        <li><span class="tri" data-id="d3-9"></span><label for="d3-9">Static vs dynamic IP, NAT concept</label></li>
+      </ul>
+
+      <div class="subgroup-label">Web request flow</div>
+      <div class="flow-row">
+        <span class="flow-pill">Browser</span><span class="flow-chevron">›</span>
+        <span class="flow-pill">DNS lookup</span><span class="flow-chevron">›</span>
+        <span class="flow-pill">Server IP</span><span class="flow-chevron">›</span>
+        <span class="flow-pill">TCP handshake</span><span class="flow-chevron">›</span>
+        <span class="flow-pill">TLS</span><span class="flow-chevron">›</span>
+        <span class="flow-pill">HTTP request</span><span class="flow-chevron">›</span>
+        <span class="flow-pill">Web server</span><span class="flow-chevron">›</span>
+        <span class="flow-pill">HTTP response</span>
+      </div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-10"></span><label for="d3-10">Can narrate this full flow from memory, unprompted</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge red">SC</div><h3>Security</h3></div>
+
+      <div class="subgroup-label">Fundamentals</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-11"></span><label for="d3-11">CIA triad — Confidentiality, Integrity, Availability</label></li>
+        <li><span class="tri" data-id="d3-12"></span><label for="d3-12">Authentication (who are you) vs authorization (what can you do)</label></li>
+      </ul>
+
+      <div class="subgroup-label">Cryptography</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-13"></span><label for="d3-13">Encryption vs hashing — not the same thing</label></li>
+        <li><span class="tri" data-id="d3-14"></span><label for="d3-14">Symmetric vs asymmetric encryption, public/private key</label></li>
+        <li><span class="tri" data-id="d3-15"></span><label for="d3-15">Digital signatures</label></li>
+      </ul>
+
+      <div class="subgroup-label">Mechanisms</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-16"></span><label for="d3-16">HTTPS/TLS, firewall, VPN, MFA</label></li>
+        <li><span class="tri" data-id="d3-17"></span><label for="d3-17">Password hashing + salting</label></li>
+        <li><span class="tri" data-id="d3-23"></span><label for="d3-23">Encryption standards named directly in past papers — AES, DES, RSA — know which is symmetric vs asymmetric</label></li>
+        <li><span class="tri" data-id="d3-24"></span><label for="d3-24">Network security devices: firewall vs IDS (detects) vs IPS (blocks) vs antivirus</label></li>
+      </ul>
+
+      <div class="subgroup-label">Common attacks — attack → vulnerability → defense</div>
+      <div class="attack-grid">
+        <div class="attack-card"><div class="aname">Phishing</div><div class="adef">Tricks users into revealing credentials. <b>Defense:</b> awareness, email filtering, MFA.</div></div>
+        <div class="attack-card"><div class="aname">Malware family</div><div class="adef">Virus/worm/trojan/ransomware damage or lock systems. <b>Defense:</b> antivirus, patching, backups.</div></div>
+        <div class="attack-card"><div class="aname">DDoS</div><div class="adef">Floods a service to make it unavailable. <b>Defense:</b> rate limiting, load balancing, CDN/WAF.</div></div>
+        <div class="attack-card"><div class="aname">Brute force</div><div class="adef">Guesses credentials repeatedly. <b>Defense:</b> lockouts, MFA, strong password policy.</div></div>
+        <div class="attack-card"><div class="aname">Man-in-the-middle</div><div class="adef">Intercepts traffic between two parties. <b>Defense:</b> TLS/HTTPS, certificate validation.</div></div>
+        <div class="attack-card"><div class="aname">SQL injection</div><div class="adef">Malicious input alters a DB query. <b>Defense:</b> parameterized queries, input validation.</div></div>
+        <div class="attack-card"><div class="aname">XSS</div><div class="adef">Injects scripts into pages other users load. <b>Defense:</b> output encoding, input sanitization, CSP.</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">CL</div><h3>Cloud</h3></div>
+
+      <div class="subgroup-label">Basics</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-18"></span><label for="d3-18">Cloud computing, virtualization, VM vs container</label></li>
+        <li><span class="tri" data-id="d3-25"></span><label for="d3-25">Client-server architecture — how a request/response cycle underlies cloud services</label></li>
+        <li><span class="tri" data-id="d3-26"></span><label for="d3-26">Cloud data centers and cloud service providers — AWS, Azure, GCP named directly in past papers as "which company offers X"</label></li>
+      </ul>
+
+      <div class="subgroup-label">Service models — who manages what</div>
+      <div class="resp-legend"><span><span class="dot" style="background:var(--amber-soft); border:1px solid var(--amber)"></span>You manage</span><span><span class="dot" style="background:var(--teal-soft); border:1px solid var(--teal)"></span>Provider manages</span></div>
+      <div class="resp-grid">
+        <div>Layer</div><div>IaaS</div><div>PaaS</div><div>SaaS</div>
+        <div>Application &amp; data</div><div class="you">You</div><div class="you">You</div><div class="them">Provider</div>
+        <div>Runtime &amp; middleware</div><div class="you">You</div><div class="them">Provider</div><div class="them">Provider</div>
+        <div>OS</div><div class="you">You</div><div class="them">Provider</div><div class="them">Provider</div>
+        <div>Servers, storage, network</div><div class="them">Provider</div><div class="them">Provider</div><div class="them">Provider</div>
+      </div>
+
+      <div class="subgroup-label">Deployment models &amp; characteristics</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d3-19"></span><label for="d3-19">Public / private / hybrid / multi-cloud</label></li>
+        <li><span class="tri" data-id="d3-20"></span><label for="d3-20">Scalability vs elasticity — know this distinction cold</label></li>
+        <li><span class="tri" data-id="d3-21"></span><label for="d3-21">Availability, fault tolerance, load balancing</label></li>
+        <li><span class="tri" data-id="d3-22"></span><label for="d3-22">Basic AWS (EC2, S3) / Azure (VM, Blob) / GCP terminology — surface-level naming, not certification depth</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">VB</div><h3>Variant buffer — OS + DBMS fundamentals</h3></div>
+      <div class="block-meta">20–30 minutes only · some 2026/27 candidate reports mention these in a subset of technical variants; they are not replacing the domains in your invitation.</div>
+      <div class="micro-grid">
+        <div class="micro-card"><strong>Operating Systems</strong><span>Process vs thread · user vs kernel mode · memory basics · paging/virtual memory · deadlock conditions · CPU scheduling at recognition level.</span></div>
+        <div class="micro-card"><strong>DBMS</strong><span>Primary/foreign/candidate keys · normalization idea (1NF/2NF/3NF, why it matters) · joins · NULL handling · transactions/ACID at recognition level · basic indexing idea.</span></div>
+      </div>
+      <div class="note">Don't turn this into an OS/DBMS study session — 20–30 minutes, recognition-level only. The goal is to not get blindsided by a handful of MCQs in a variant where these appear, not to master either subject.</div>
+    </div>
+    <div class="block">
+      <div class="block-title"><div class="badge">MO</div><h3>MS Office &amp; common applications</h3></div>
+
+      <div class="subgroup-label">Excel — deserves the most attention here</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d4-1"></span><label for="d4-1">Relative vs absolute cell references</label></li>
+        <li><span class="tri" data-id="d4-2"></span><label for="d4-2">SUM, AVERAGE, COUNT, MAX, MIN</label></li>
+        <li><span class="tri" data-id="d4-3"></span><label for="d4-3">IF, COUNTIF, SUMIF</label></li>
+        <li><span class="tri" data-id="d4-4"></span><label for="d4-4">Sort / filter, basic charts</label></li>
+      </ul>
+
+      <div class="subgroup-label">Word &amp; PowerPoint</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d4-5"></span><label for="d4-5">Word: styles, tables, headers/footers, find-replace, track changes</label></li>
+        <li><span class="tri" data-id="d4-6"></span><label for="d4-6">PowerPoint: layouts, themes, transitions, animations</label></li>
+        <li><span class="tri" data-id="d4-30"></span><label for="d4-30">Outlook: email management, calendar, contacts, quick steps/rules</label></li>
+      </ul>
+
+      <div class="subgroup-label">General computer knowledge — the part candidates most often skip</div>
+      <ul class="checklist" data-group="day1">
+        <li><span class="tri" data-id="d4-7"></span><label for="d4-7">File extensions, OS basics, browser basics (tabs, bookmarks, cache/cookies, incognito)</label></li>
+        <li><span class="tri" data-id="d4-8"></span><label for="d4-8">Email, cloud storage, common keyboard shortcuts across Word/Excel/PowerPoint/OS</label></li>
+        <li><span class="tri" data-id="d4-31"></span><label for="d4-31">Basic Command Prompt / terminal commands (dir/ls, cd, mkdir, ping) — this shows up as its own sub-topic in past papers, not just "computer basics"</label></li>
+        <li><span class="tri" data-id="d4-32"></span><label for="d4-32">"Workflow of keys" style questions — e.g. what a specific shortcut or Tab/Indent action does mid-document</label></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ROUND 2 -->
+  <section class="panel" id="day2">
+    <div class="day-head"><h2>Round 2 — Coding Assessment</h2><span class="day-date">60 min · 3 questions, only reached after clearing Round 1</span></div>
+    <p class="day-objective">Multiple 2025–26 batch reports (GeeksforGeeks, aggregated candidate threads) describe the 3-question set as <strong>one DSA problem + one SQL join query + one HTML/CSS/JS frontend task</strong> — not three same-style DSA problems. This tab is built around that mix; treat it as the likely shape, confirm on your mock.</p>
+    <div class="progress-track"><div class="progress-fill" id="prog-day2"></div></div>
+    <div class="tri-legend">
+      <span class="lg"><span class="dot" style="background:var(--red)"></span>Fix now</span>
+      <span class="lg"><span class="dot" style="background:var(--amber)"></span>Needs practice</span>
+      <span class="lg"><span class="dot" style="background:var(--teal)"></span>Ready</span>
+      <span class="hint">Tap any item to cycle its confidence</span>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge">AS</div><h3>Arrays &amp; Strings</h3></div>
+      <div class="subgroup-label">Array patterns</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-1"></span><label for="d2-1">Traversal, min/max, second largest</label></li>
+        <li><span class="tri" data-id="d2-2"></span><label for="d2-2">Frequency counting, duplicate detection</label></li>
+        <li><span class="tri" data-id="d2-3"></span><label for="d2-3">Reversal, rotation</label></li>
+        <li><span class="tri" data-id="d2-4"></span><label for="d2-4">Missing number, pair sum</label></li>
+      </ul>
+      <div class="subgroup-label">String patterns</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-5"></span><label for="d2-5">Reverse, palindrome, anagram</label></li>
+        <li><span class="tri" data-id="d2-6"></span><label for="d2-6">Character frequency, duplicate characters</label></li>
+        <li><span class="tri" data-id="d2-7"></span><label for="d2-7">Vowel/consonant processing</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">HM</div><h3>Hashing — highest payoff for this format</h3></div>
+      <div class="subgroup-label">Structures &amp; patterns</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-8"></span><label for="d2-8">HashMap / HashSet core operations</label></li>
+        <li><span class="tri" data-id="d2-9"></span><label for="d2-9">Frequency counting, duplicate detection</label></li>
+        <li><span class="tri" data-id="d2-10"></span><label for="d2-10">Pair-lookup pattern (two-sum style)</label></li>
+        <li><span class="tri" data-id="d2-11"></span><label for="d2-11">Internalize: O(n²) brute force → O(n) average with hashing</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge red">CP</div><h3>Searching, sorting &amp; core patterns</h3></div>
+      <div class="subgroup-label">Searching &amp; sorting</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-12"></span><label for="d2-12">Linear vs binary search — sorted-array requirement, boundaries</label></li>
+        <li><span class="tri" data-id="d2-13"></span><label for="d2-13">Bubble / selection / insertion sort — behavior + complexity</label></li>
+        <li><span class="tri" data-id="d2-14"></span><label for="d2-14">Merge / quick sort — concept + complexity only</label></li>
+      </ul>
+      <div class="subgroup-label">Two pointers &amp; sliding window</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-15"></span><label for="d2-15">Opposite &amp; same-direction two pointers on sorted arrays</label></li>
+        <li><span class="tri" data-id="d2-16"></span><label for="d2-16">Fixed-size sliding window, basic variable-size window — a Dec-2025 2026-batch report named a <b>dynamic (variable-size) sliding-window</b> problem specifically as the DSA question, so don't treat fixed-size as the only variant</label></li>
+      </ul>
+      <div class="subgroup-label">Stack, queue, linked list &amp; matrix</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-17"></span><label for="d2-17">Stack — push/pop/peek, parentheses problems</label></li>
+        <li><span class="tri" data-id="d2-18"></span><label for="d2-18">Queue — FIFO, basic BFS idea</label></li>
+        <li><span class="tri" data-id="d2-19"></span><label for="d2-19">Linked list traversal / reversal, fast &amp; slow pointers (cycle detection, finding the middle node)</label></li>
+        <li><span class="tri" data-id="d2-20"></span><label for="d2-20">Matrix traversal (rows/cols/diagonals)</label></li>
+      </ul>
+      <div class="subgroup-label">Basic math patterns — easy "warm-up" questions, don't skip these</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-29"></span><label for="d2-29">Prime check, GCD/LCM (Euclidean algorithm)</label></li>
+        <li><span class="tri" data-id="d2-30"></span><label for="d2-30">Factorial, Fibonacci series (iterative + recursive)</label></li>
+        <li><span class="tri" data-id="d2-31"></span><label for="d2-31">Digit sum, digit/number reversal, palindrome numbers, Armstrong numbers</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge">SQ</div><h3>SQL — reported as one of the 3 coding questions, not just a backup</h3></div>
+      <div class="subgroup-label">Query basics</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-21"></span><label for="d2-21">SELECT / WHERE / ORDER BY / DISTINCT</label></li>
+      </ul>
+      <div class="subgroup-label">Aggregation &amp; joins</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-22"></span><label for="d2-22">COUNT, SUM, AVG, MIN, MAX + GROUP BY / HAVING</label></li>
+        <li><span class="tri" data-id="d2-23"></span><label for="d2-23">INNER / LEFT / RIGHT JOIN, primary vs foreign key — reports specifically describe a join-based query against a given schema</label></li>
+      </ul>
+      <div class="subgroup-label">Subqueries &amp; distinctions</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-24"></span><label for="d2-24">Subqueries with IN / EXISTS</label></li>
+        <li><span class="tri" data-id="d2-25"></span><label for="d2-25">WHERE vs HAVING, WHERE vs ON, COUNT(*) vs COUNT(column)</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge red">FE</div><h3>Frontend basics — light coverage for the reported HTML/CSS/JS task</h3></div>
+      <div class="block-meta">Not a deep-dive — just enough to not lose free points if this question type appears. 30–45 minutes total, not a full day.</div>
+      <ul class="checklist" data-group="day2">
+        <li><span class="tri" data-id="d2-26"></span><label for="d2-26">Core HTML tags, form inputs, basic semantic structure</label></li>
+        <li><span class="tri" data-id="d2-27"></span><label for="d2-27">CSS selectors, box model, flexbox basics (enough to fix layout, not design it)</label></li>
+        <li><span class="tri" data-id="d2-28"></span><label for="d2-28">Vanilla JS DOM basics: <code>querySelector</code>, event listeners, updating text/attributes on click</label></li>
+      </ul>
+      <div class="note">Reported as an editing/fill-in style task on an existing page rather than "build a UI from scratch" — so recognizing and modifying DOM code matters more than design skill. If your slot doesn't include this, this block cost you under an hour either way.</div>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">TS</div><h3>Coding-round time strategy — rehearse this exact flow</h3></div>
+      <div class="timeline-legend">
+        <span><span class="dot" style="background:var(--ink)"></span>Read &amp; classify</span>
+        <span><span class="dot" style="background:var(--teal)"></span>Easiest problem</span>
+        <span><span class="dot" style="background:var(--amber)"></span>Second problem</span>
+        <span><span class="dot" style="background:var(--red)"></span>Third + debug</span>
+      </div>
+      <div class="timeline-bar">
+        <div class="timeline-seg" style="width:8.3%; background:var(--ink);">5</div>
+        <div class="timeline-seg" style="width:33.3%; background:var(--teal);">15–20</div>
+        <div class="timeline-seg" style="width:33.3%; background:var(--amber);">20</div>
+        <div class="timeline-seg" style="width:25%; background:var(--red);">remaining</div>
+      </div>
+      <div class="time-strategy">
+        <div class="row"><span class="t">First 5 min</span><span>Read all 3 problems, classify each (array/string? hashing? two-pointer? sort/search? harder?)</span></div>
+        <div class="row"><span class="t">Next 15–20 min</span><span>Solve the easiest one completely, including edge cases</span></div>
+        <div class="row"><span class="t">Next 20 min</span><span>Solve the second problem</span></div>
+        <div class="row"><span class="t">Remaining time</span><span>Attempt the third + debug + run through test cases on all three</span></div>
+      </div>
+      <div class="note"><strong>Don't fight one problem for 35 minutes.</strong> If a question isn't clicking after ~15–20 minutes, bank partial credit and move on.</div>
+      <div class="note">Candidate reports commonly cite the clearance bar as roughly <strong>2 fully-passing solutions + 1 partial</strong> (not all 3 perfect) — so a clean, fully-tested solution on two beats a rushed, broken attempt at all three. If the mix really is DSA + SQL + Frontend, your SQL query is usually the fastest of the three to get fully correct — consider doing it first to bank a guaranteed pass, then spend remaining time on the DSA problem, with frontend last since it's the most likely to be skippable if time runs out.</div>
+      <p style="font-size:13.5px; margin:14px 0 0;">Today, practice at least one <strong>timed 3-question / 60-minute set</strong> — not just isolated untimed problems.</p>
+    </div>
+  </section>
+
+  <!-- ROUND 3 -->
+  <section class="panel" id="day3">
+    <div class="day-head"><h2>Round 3 — Behavioral + Cognitive</h2><span class="day-date">40 min · personality + gamified puzzles, only reached after clearing Round 2</span></div>
+    <p class="day-objective">Personality assessment plus immersive/gamified puzzles and numerical equations. This round genuinely needs the least prep time of the four — don't over-invest here.</p>
+    <div class="progress-track"><div class="progress-fill" id="prog-day3"></div></div>
+    <div class="tri-legend">
+      <span class="lg"><span class="dot" style="background:var(--red)"></span>Fix now</span>
+      <span class="lg"><span class="dot" style="background:var(--amber)"></span>Needs practice</span>
+      <span class="lg"><span class="dot" style="background:var(--teal)"></span>Ready</span>
+      <span class="hint">Tap any item to cycle its confidence</span>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">CG</div><h3>Cognitive — puzzles + numerical equations</h3></div>
+      <div class="block-meta">Researched from 2025–26 candidate reports — task names vary by drive, but the underlying skills are consistent. Verify what actually loads on your mock.</div>
+
+      <div class="subgroup-label">Numerical</div>
+      <ul class="checklist" data-group="day3">
+        <li><span class="tri" data-id="d4-9"></span><label for="d4-9">Percentages, ratios, averages</label></li>
+        <li><span class="tri" data-id="d4-10"></span><label for="d4-10">Number sequences, basic equations</label></li>
+        <li><span class="tri" data-id="d4-11"></span><label for="d4-11">Profit/loss, speed/distance/time basics</label></li>
+        <li><span class="tri" data-id="d4-24"></span><label for="d4-24">Rapid single/two-digit arithmetic under a tight timer — candidates report this is the one task with quant overlap, but far faster-paced than a normal aptitude section</label></li>
+      </ul>
+
+      <div class="subgroup-label">Commonly reported gamified task types</div>
+      <ul class="checklist" data-group="day3">
+        <li><span class="tri" data-id="d4-12"></span><label for="d4-12"><b>Path/route puzzle</b> — trace the shortest route through a grid around obstacles, against a per-puzzle timer. Widely reported as the most heavily weighted task.</label></li>
+        <li><span class="tri" data-id="d4-13"></span><label for="d4-13"><b>Sequence/pattern recall</b> — a sequence of shapes or colours flashes, then you replay it in order; length grows each round (Simon-Says style)</label></li>
+        <li><span class="tri" data-id="d4-25"></span><label for="d4-25"><b>Logic-move puzzle</b> — a Tower-of-Hanoi-style disk puzzle, moving pieces to a target arrangement in the fewest moves</label></li>
+        <li><span class="tri" data-id="d4-26"></span><label for="d4-26"><b>Reaction-time task</b> — press the correct key on a prompt while ignoring decoy prompts, scored on speed + accuracy together</label></li>
+      </ul>
+      <div class="subgroup-label">Practice sources (free, no prep needed)</div>
+      <ul class="checklist" data-group="day3">
+        <li><span class="tri" data-id="d4-14"></span><label for="d4-14">A "shortest path" grid puzzle app or Lumosity-style path game, timed</label></li>
+        <li><span class="tri" data-id="d4-27"></span><label for="d4-27">Simon-Says / color-sequence memory app</label></li>
+        <li><span class="tri" data-id="d4-28"></span><label for="d4-28">A Tower of Hanoi solver/practice app — get the recursive move pattern into muscle memory</label></li>
+        <li><span class="tri" data-id="d4-29"></span><label for="d4-29">Human Benchmark's reaction-time test (free, browser-based) for a few rounds</label></li>
+      </ul>
+      <div class="note">Reported coverage is uneven — many drives still run the older verbal/numerical/logical MCQ format instead of games, and exact task names differ across sources. Don't over-prepare one task: reports suggest balanced-but-average performance across tasks clears the cutoff better than being excellent at one and weak at another. Treat the list above as <strong>practice direction</strong>, not a confirmed spec — your own mock assessment is the real answer for what you'll see.</div>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge red">BH</div><h3>Behavioral (personality) — 30 minutes or less, genuinely</h3></div>
+      <ul class="checklist" data-group="day3">
+        <li><span class="tri" data-id="d4-15"></span><label for="d4-15">Skim workplace-behavior themes: teamwork, accountability, adaptability, professionalism</label></li>
+        <li><span class="tri" data-id="d4-16"></span><label for="d4-16">Decide your honest answering approach in advance</label></li>
+      </ul>
+      <div class="note">Personality assessments flag inconsistency, not any single "wrong" answer. <strong>Consistency &gt; optimization</strong> here. There's no productive multi-hour curriculum for this section — half an hour (or less) of skimming is genuinely enough; don't let it eat into Day 4's technical time.</div>
+    </div>
+
+  </section>
+
+  <!-- ROUND 4 -->
+  <section class="panel" id="day4">
+    <div class="day-head"><h2>Round 4 — Communication Assessment</h2><span class="day-date">~25–30 min · separate slot, reached after clearing Round 3</span></div>
+    <p class="day-objective">Software-graded verbal + written test. Reached last, and usually scheduled as its own separate slot rather than the same sitting as the rest.</p>
+    <div class="progress-track"><div class="progress-fill" id="prog-day4"></div></div>
+    <div class="tri-legend">
+      <span class="lg"><span class="dot" style="background:var(--red)"></span>Fix now</span>
+      <span class="lg"><span class="dot" style="background:var(--amber)"></span>Needs practice</span>
+      <span class="lg"><span class="dot" style="background:var(--teal)"></span>Ready</span>
+      <span class="hint">Tap any item to cycle its confidence</span>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge">CM</div><h3>Communication — the real, automated test format</h3></div>
+      <div class="block-meta">~25–30 min, software-graded (not a human on the call). Candidate reports converge on a consistent section list, though exact section count/order varies by drive.</div>
+
+      <div class="subgroup-label">Reported sections, in typical order</div>
+      <ul class="checklist" data-group="day4">
+        <li><span class="tri" data-id="d4-17"></span><label for="d4-17"><b>Reading</b> — a passage, then MCQs on it; read the questions first, then skim for answers</label></li>
+        <li><span class="tri" data-id="d4-33"></span><label for="d4-33"><b>Listening</b> — an audio clip, then questions on main idea, detail, or speaker's attitude</label></li>
+        <li><span class="tri" data-id="d4-34"></span><label for="d4-34"><b>Sentence repetition</b> — hear a sentence, repeat it aloud exactly, clearly, at a steady pace</label></li>
+        <li><span class="tri" data-id="d4-35"></span><label for="d4-35"><b>Jumbled-sentence reordering</b> — a sentence is read back in a scrambled word order; you say it back in the correct, natural order</label></li>
+        <li><span class="tri" data-id="d4-36"></span><label for="d4-36"><b>Rapid spoken Q&amp;A</b> — a run of short, simple, everyday questions, one spoken answer each — this is scored on fluency/vocabulary, not "correctness"</label></li>
+        <li><span class="tri" data-id="d4-37"></span><label for="d4-37"><b>Open-ended speaking</b> — describe/explain something for 45–60 seconds using a point → reason → example → conclusion structure</label></li>
+        <li><span class="tri" data-id="d4-38"></span><label for="d4-38">Some drives add a short <b>email-writing</b> task at the end if you pass the spoken sections — professional tone, clear ask, proper close</label></li>
+      </ul>
+
+      <div class="subgroup-label">Grammar priority (feeds both spoken and written scoring)</div>
+      <ul class="checklist" data-group="day4">
+        <li><span class="tri" data-id="d4-20"></span><label for="d4-20">Subject-verb agreement, tenses, articles</label></li>
+        <li><span class="tri" data-id="d4-21"></span><label for="d4-21">Prepositions, conditionals, active/passive voice</label></li>
+      </ul>
+
+      <div class="subgroup-label">Written etiquette</div>
+      <ul class="checklist" data-group="day4">
+        <li><span class="tri" data-id="d4-22"></span><label for="d4-22">Professional etiquette — greeting, clear request, professional close</label></li>
+        <li><span class="tri" data-id="d4-23"></span><label for="d4-23">Write one short professional email; proofread it</label></li>
+      </ul>
+
+      <div class="note">Because it's software-graded: start speaking the instant the beep/prompt appears (a slow start eats your response window), speak at a steady ~80% pace rather than rushing and slurring, and test your headset/mic in a quiet room beforehand. Multiple reports note technically strong candidates get filtered out here purely from setup issues or nerves, not language ability — do at least one full practice run out loud before your real slot.</div>
+    </div>
+  </section>
+
+  <!-- REVISION -->
+  <section class="panel" id="day5">
+    <div class="day-head"><h2>Revision — Quick Reference, Anytime</h2><span class="day-date">Not date-bound</span></div>
+    <p class="day-objective">Not a separate round to prep for — Rounds 1 through 4 already cover every topic once. Use this tab as a standing reference: a fast pass the morning of your assessment, or jump straight to the one block below that matches whatever's coming up next while you're actually sitting in the test.</p>
+    <div class="block" style="background:var(--paper); border-style:dashed;">
+      <div class="block-meta" style="margin:0 0 8px;"><b>Jump to what's next:</b></div>
+      <ul class="checklist" data-group="__nav" style="pointer-events:none;">
+        <li style="cursor:default;">→ Sitting <b>Round 1 (Technical MCQs)</b>? Use "Technical — fast pass" below (Programming, Pseudocode, Networking, Security, Cloud, MS Office).</li>
+        <li style="cursor:default;">→ Sitting <b>Round 2 (Coding)</b>? Use "Coding — fast pass" (DSA patterns, SQL, Frontend basics, the time strategy).</li>
+        <li style="cursor:default;">→ Sitting <b>Round 3 (Behavioral + Cognitive)</b>? Use "Behavioral + Cognitive — fast pass" — this one's short, 30 min tops covers both.</li>
+        <li style="cursor:default;">→ Sitting <b>Round 4 (Communication)</b>? Use "Communication — fast pass."</li>
+      </ul>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-day5"></div></div>
+    <div class="tri-legend">
+      <span class="lg"><span class="dot" style="background:var(--red)"></span>Fix now</span>
+      <span class="lg"><span class="dot" style="background:var(--amber)"></span>Needs practice</span>
+      <span class="lg"><span class="dot" style="background:var(--teal)"></span>Ready</span>
+      <span class="hint">Tap any item to cycle its confidence</span>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge">B1</div><h3>Technical — fast pass (Round 1 content)</h3></div>
+      <div class="block-meta">Skim, don't re-learn. This is the block to open the morning of, or right before, the Technical MCQ round.</div>
+      <ul class="checklist" data-group="day5">
+        <li><span class="tri" data-id="d5-1"></span><label for="d5-1">Programming: operators, loops, arrays, strings, OOP, complexity, Java syntax</label></li>
+        <li><span class="tri" data-id="d5-13b"></span><label for="d5-13b">Pseudocode: nested-loop/if tracing, pointer/pass-by-reference notation, static variables, bitwise ops</label></li>
+        <li><span class="tri" data-id="d5-2"></span><label for="d5-2">Networking: OSI, TCP/IP, TCP vs UDP, DNS, HTTP/HTTPS, IP, common protocols</label></li>
+        <li><span class="tri" data-id="d5-3"></span><label for="d5-3">Security: CIA, auth vs authz, encryption vs hashing, encryption standards (AES/DES/RSA), attacks, mechanisms</label></li>
+        <li><span class="tri" data-id="d5-4"></span><label for="d5-4">Cloud: IaaS/PaaS/SaaS, deployment models, VM vs container, scalability vs elasticity</label></li>
+        <li><span class="tri" data-id="d5-5"></span><label for="d5-5">MS Office quick pass — Excel formulas, shortcuts, Command Prompt basics</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">B2</div><h3>Coding — fast pass (Round 2 content)</h3></div>
+      <div class="block-meta">Open this right before the Coding round</div>
+      <ul class="checklist" data-group="day5">
+        <li><span class="tri" data-id="d5-13c"></span><label for="d5-13c">Trigger check: seeing "duplicate/frequency/lookup" → reach for HashMap; "sorted array + pair" → two pointers; "longest/shortest subarray meeting a condition" → sliding window</label></li>
+        <li><span class="tri" data-id="d5-13d"></span><label for="d5-13d">SQL reflex: JOIN + GROUP BY/HAVING syntax, WHERE vs HAVING, prime/GCD/Fibonacci/Armstrong logic</label></li>
+        <li><span class="tri" data-id="d5-13e"></span><label for="d5-13e">Frontend reflex: <code>querySelector</code> + event listener + update text/attribute pattern</label></li>
+      </ul>
+      <div class="note">If you get time for one practice run before the real thing: run one full 60-minute / 3-question timed set in Java, then debrief — wrong algorithm, slow implementation, misread question, Java slip, or missed edge case? Optional, not required — Days 1–4 already cover the content.</div>
+      <div class="note">Success on the day isn't "I solved all three" — it's <strong>maximizing correct output across all three</strong> without sacrificing two solved problems chasing a hard third.</div>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge red">B3</div><h3>Behavioral + Cognitive — fast pass (30 min covers both)</h3></div>
+      <div class="block-meta">This section genuinely doesn't need more than half an hour — a quick reminder, then go in</div>
+      <ul class="checklist" data-group="day5">
+        <li><span class="tri" data-id="d5-13"></span><label for="d5-13">Behavioral: answer honestly and consistently — there's no "correct" personality to construct, so don't overthink it</label></li>
+        <li><span class="tri" data-id="d5-8"></span><label for="d5-8">Cognitive: prioritize speed, don't get stuck on one puzzle; recall the reported task types (path puzzle, sequence recall, logic-move puzzle, reaction-time) so nothing feels unfamiliar</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge">B4</div><h3>Communication — fast pass (Round 4 content)</h3></div>
+      <ul class="checklist" data-group="day5">
+        <li><span class="tri" data-id="d5-9"></span><label for="d5-9">Say your self-introduction out loud once, timed</label></li>
+        <li><span class="tri" data-id="d5-10"></span><label for="d5-10">Explain one technical concept and one past project in plain language</label></li>
+        <li><span class="tri" data-id="d5-11"></span><label for="d5-11">Recall the section order: reading → listening → sentence repetition → jumbled-sentence reorder → rapid Q&amp;A → open-ended speaking → (sometimes) email</label></li>
+        <li><span class="tri" data-id="d5-12"></span><label for="d5-12">Reminder: speak right at the beep, steady pace, quiet room + tested headset</label></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-title"><div class="badge amber">✓</div><h3>Must-know checklist — final gate before assessment day</h3></div>
+      <div class="block-meta">If any of these feels shaky, that's where remaining time goes</div>
+      <ul class="checklist" data-group="day5">
+        <li><span class="tri" data-id="d5-13"></span><label for="d5-13">I can trace nested loops and if/else pseudocode without hesitating</label></li>
+        <li><span class="tri" data-id="d5-14"></span><label for="d5-14">I can solve an array/string + a hashing problem in Java inside 20 minutes each</label></li>
+        <li><span class="tri" data-id="d5-15"></span><label for="d5-15">I can explain OSI layers, TCP vs UDP, and the browser→server request flow</label></li>
+        <li><span class="tri" data-id="d5-16"></span><label for="d5-16">I can explain encryption vs hashing and name 4–5 attacks with one-line defenses</label></li>
+        <li><span class="tri" data-id="d5-17"></span><label for="d5-17">I know IaaS/PaaS/SaaS and scalability vs elasticity cold</label></li>
+        <li><span class="tri" data-id="d5-18"></span><label for="d5-18">I can write a JOIN + GROUP BY/HAVING query without looking it up</label></li>
+        <li><span class="tri" data-id="d5-21"></span><label for="d5-21">I can select a DOM element and change its text/attribute on a click event in plain JS</label></li>
+        <li><span class="tri" data-id="d5-22"></span><label for="d5-22">I can write prime-check, GCD, Fibonacci, and Armstrong-number logic from memory, no lookup</label></li>
+        <li><span class="tri" data-id="d5-19"></span><label for="d5-19">I'm comfortable with Excel's IF/COUNTIF/SUMIF and absolute vs relative references</label></li>
+        <li><span class="tri" data-id="d5-20"></span><label for="d5-20">I can speak for 45–60 seconds on a technical topic without excessive pauses, and can repeat a sentence back cleanly on the first try</label></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="foot">
+    Built from your official Accenture assessment brief, cross-checked against 2025–26 candidate-reported sources: a dated GeeksforGeeks 2026-batch on-campus interview experience (assessment 13 Oct 2025 — confirms the DSA + SQL + HTML/CSS/JS coding mix, 50-question behavioral round, and gamified cognitive tasks), a September-2025 "Advance ASE" report on Naukri Code360 reaffirming DSA/SQL/web-dev as the deciding coding skills, aggregated 2025–2026 candidate reports on FastPrep, and PrepInsta / PlacementPreparation.io syllabus breakdowns for MS Office, Networking/Security/Cloud and Communication test structure. One source explicitly notes Accenture has confirmed the same assessment framework applies to both the 2026 and 2027 passing-out batches, which is why this 2026-batch evidence is used directly for your 2027-batch drive — but another notes there's no single verified worldwide "2027 pattern," since format varies by country and route (India campus vs. UK vs. international postings). Items marked "reported" or "candidate-reported" are unofficial, self-reported, and vary by drive/college — treat them as practice direction and confirm against your own mock, not as a guaranteed spec. Skip Advanced DP/graphs, system design, Kubernetes, advanced Spring Boot/Docker, and certification-depth cloud content this week — valuable later, not this week's job. Tap-to-cycle confidence progress is saved in this browser only.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('#tabs button');
+  var panels = document.querySelectorAll('.panel');
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.dataset.panel);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  var STORAGE_KEY = 'accenture-plan-triage-v2';
+  var ORDER = ['none', 'red', 'yellow', 'green'];
+  function loadState(){
+    try { var raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; }
+    catch(e){ return {}; }
+  }
+  function saveState(state){ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){} }
+  var state = loadState();
+
+  var dots = document.querySelectorAll('.tri');
+  dots.forEach(function(dot){
+    var saved = state[dot.dataset.id];
+    if (saved) { dot.setAttribute('data-state', saved); dot.closest('li').classList.toggle('done', saved === 'green'); }
+  });
+
+  document.querySelectorAll('ul.checklist li').forEach(function(li){
+    li.addEventListener('click', function(){
+      var dot = li.querySelector('.tri');
+      if (!dot) return;
+      var cur = dot.getAttribute('data-state') || 'none';
+      var next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+      if (next === 'none') { dot.removeAttribute('data-state'); delete state[dot.dataset.id]; }
+      else { dot.setAttribute('data-state', next); state[dot.dataset.id] = next; }
+      li.classList.toggle('done', next === 'green');
+      saveState(state);
+      updateProgress();
+    });
+  });
+
+  function updateProgress(){
+    ['day1','day2','day3','day4','day5'].forEach(function(day){
+      var group = document.querySelectorAll('ul.checklist[data-group="'+day+'"] .tri');
+      if (!group.length) return;
+      var green = 0;
+      group.forEach(function(d){ if (d.getAttribute('data-state') === 'green') green++; });
+      var pct = Math.round((green / group.length) * 100);
+      var fill = document.getElementById('prog-' + day);
+      if (fill) fill.style.width = pct + '%';
+    });
+  }
+  updateProgress();
+
+  var TARGET_KEY = 'accenture-plan-target-v1';
+  var btns = document.querySelectorAll('#targetBtns .tbtn');
+  var savedTarget = null;
+  try { savedTarget = localStorage.getItem(TARGET_KEY); } catch(e){}
+
+  function setActiveBtn(dateStr){ btns.forEach(function(b){ b.classList.toggle('active', b.dataset.date === dateStr); }); }
+  function computeDaysLeft(dateStr){
+    var today = new Date(); today.setHours(0,0,0,0);
+    var target = new Date(dateStr + 'T00:00:00');
+    return Math.ceil((target - today) / 86400000);
+  }
+  function updateCountdown(dateStr){
+    var el = document.getElementById('daysLeft');
+    if (!dateStr) { el.textContent = '–'; return; }
+    var diff = computeDaysLeft(dateStr);
+    el.textContent = diff > 0 ? diff : (diff === 0 ? 'Today' : '—');
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      setActiveBtn(b.dataset.date);
+      try { localStorage.setItem(TARGET_KEY, b.dataset.date); } catch(e){}
+      updateCountdown(b.dataset.date);
+    });
+  });
+
+  var initialTarget = savedTarget || '2026-09-28';
+  setActiveBtn(initialTarget);
+  updateCountdown(initialTarget);
+})();
+</script>
+</body>
+</html>
